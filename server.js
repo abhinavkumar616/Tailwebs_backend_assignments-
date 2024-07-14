@@ -44,9 +44,9 @@ app.use(
       secure: false, // Set to true if using HTTPS
       httpOnly: true,
       sameSite: 'strict',
-      maxAge: 3600000 // 1 hour
+      // maxAge: 3600000 // 1 hour
     },
-    store: MongoStore.create({ mongoUrl: keys.mongoURI })
+    // store: MongoStore.create({ mongoUrl: keys.mongoURI })
   })
 );
 

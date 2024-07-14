@@ -15,17 +15,42 @@ const userRegister = async (req, res) => {
             })
         }
 
+        // Regex validation for email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).send({
+                status: 400,
+                message: "Invalid email format"
+            });
+        }
+
+        // Regex validation for mobile number
+        const mobileRegex = /^[0-9]{10}$/;
+        if (!mobileRegex.test(mobile)) {
+            return res.status(400).send({
+                status: 400,
+                message: "Mobile Number Should be 10 digits"
+            });
+        }
+
         if (await User.findOne({ username: username })) {
             return res.status(409).send({
                 message: "Username already exists"
             })
         }
 
-        const hashPassword = await bcrypt.hash(password, 10);
+        // if(mobile.length!==10){
+        //     return res.status(400).send({
+        //         status:400,
+        //         message:"Mobile Number Should be 10 digits"
+        //     })
+        // }
+
+
 
         // Create the new user
         const newUser = await User.create({
-            username, email, mobile, password: hashPassword
+            username, email, mobile, password
         });
 
         // Set the session for the new user
