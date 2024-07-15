@@ -13,6 +13,10 @@ const StudentSchema = new Schema({
   marks: {
     type: Number,
     default: 0
+  },
+  creator:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User"
   }
 });
 

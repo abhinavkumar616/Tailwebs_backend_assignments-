@@ -18,7 +18,11 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  created_student_id:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Student"
+  }]
 });
 
 UserSchema.pre('save', async function (next) {

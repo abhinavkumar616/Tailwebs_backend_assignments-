@@ -56,6 +56,7 @@ const userRegister = async (req, res) => {
         // Set the session for the new user
         req.session.userId = newUser._id;
         console.log("req.session.userId-------", req.session.userId);
+        console.log("req.sessionID..............",req.sessionID);
         return res.status(201).send({
             status: 201,
             sessionId: req.sessionID
@@ -84,6 +85,7 @@ const userLogin = async (req, res, next) => {
 
                 req.session.userId = user._id;
                 console.log("req.session.userId-------", req.session.userId);
+                console.log("req.session for login",req.sessionID);
 
                 return res.json({
                     status: 200,

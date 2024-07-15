@@ -1,4 +1,5 @@
 const Student = require('../models/student');
+const userModel = require('../models/user');
 
 const getAllstudent = async (req, res) => {
 
@@ -28,16 +29,36 @@ const createNewStudent = async (req, res) => {
       })
     }
 
+    // console.log("req.session.userId in student controllers",req.session.userId);
+    // return
+    let findUserId=await userModel.findOne({_id:req.session.userId})
+    console.log("findUserId:::::::",findUserId);
+    // return
     let findStudent = await Student.findOne({ name, subject })
+    console.log("findStudent",findStudent);
+    
+    // return
     if (findStudent) {
+      let findStudent_creator=findStudent.creator.toString()
+      if(findStudent_creator !== req.session.userId){
+        return res.status(404).send({
+          status:"Fail",
+          message:"You are not Authorized to update the Marks"
+        })
+      }
       findStudent.marks = findStudent.marks + marks
       findStudent.save()
       return res.status(200).send({
         message: 'Student marks updated successfully'
       })
     }
-    const newStudent = new Student({ name, subject, marks });
-    newStudent.save()
+
+    const newStudent = new Student({ name, subject, marks, creator:req.session.userId });
+    await newStudent.save()
+    // await newStudent.created_student_id.push(findStudent._id)
+    findUserId.created_student_id.push(newStudent._id)
+    await findUserId.save()
+
     return res.status(201).send({
       message: 'New student added successfully'
     })
